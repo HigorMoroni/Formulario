@@ -11,7 +11,34 @@ class ValidaFormulario {
     handleSubmit(e) {
         e.preventDefault()
         const camposValidos = this.camposSaoValidos()
+        const senhasValidas = this.senhasSaoValidas()
+
+        if(camposValidos && senhasValidas) {
+            alert('Formulário enviado')
+            this.formulario.submit
+        }
     }
+
+    senhasSaoValidas() {
+        let valid = true
+
+        const senha = this.formulario.querySelector('.senha')
+        const repetirSenha = this.formulario.querySelector('.repetir-senha')
+
+        if(senha.value !== repetirSenha.value) {
+            valid = false
+            this.criaErro(senha, 'Campos "Senha" e "Repetir Senha" precisam ser iguais')
+            this.criaErro(repetirSenha, 'Campos "Senha" e "Repetir Senha" precisam ser iguais')
+        }
+
+        if(senha.value.length < 6 || senha.value.length > 12) {
+            valid = false
+            this.criaErro(senha, 'O campo "Senha" precisa conter entre 6 e 12 caracteres')
+        }
+
+        return valid
+    }
+
     camposSaoValidos() {
         let valid = true
 
@@ -22,7 +49,7 @@ class ValidaFormulario {
         for(let campo of this.formulario.querySelectorAll('.validar')) {
             const label = campo.previousElementSibling.innerText
             if(!campo.value) {
-                this.criaErro(campo, `Campo "${label}" não pode sestar em branco`)
+                this.criaErro(campo, `Campo "${label}" não pode estar em branco`)
                 valid = false
             }
 
@@ -34,6 +61,7 @@ class ValidaFormulario {
                 if(!this.validaUsuario(campo)) valid = false
             }
         }
+        return valid
     }
     validaUsuario(campo) {
         const usuario = campo.value
