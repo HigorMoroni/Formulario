@@ -15,7 +15,7 @@ class ValidaFormulario {
 
         if(camposValidos && senhasValidas) {
             alert('Formulário enviado')
-            this.formulario.submit
+            this.formulario.submit()
         }
     }
 
