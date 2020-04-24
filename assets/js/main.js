@@ -22,16 +22,33 @@ class ValidaFormulario {
         for(let campo of this.formulario.querySelectorAll('.validar')) {
             const label = campo.previousElementSibling.innerText
             if(!campo.value) {
-                this.criaErro(campo, `Campo ${label} não pode sestar em branco`)
+                this.criaErro(campo, `Campo "${label}" não pode sestar em branco`)
                 valid = false
             }
 
             if(campo.classList.contains('cpf')) {
                 if(!this.validaCPF(campo)) valid = false
+            }
 
+            if(campo.classList.contains('usuario')) {
+                if(!this.validaUsuario(campo)) valid = false
             }
         }
     }
+    validaUsuario(campo) {
+        const usuario = campo.value
+        let valid = true
+        if(usuario.length < 3 || usuario.length > 12) {
+            this.criaErro (campo, 'Usuário precisa ter entre 3 e 12 caracteres')
+            valid = false
+        }
+        if(!usuario.match(/^[a-zA-Z0-9]+$/g)) {
+            this.criaErro (campo, 'Nome de usuário precisa conter letras e/ou números')
+            valid = false
+        }
+        return valid
+    }
+
     validaCPF(campo) {
         const cpf = new ValidaCPF(campo.value)
         if (!cpf.valida()) {
